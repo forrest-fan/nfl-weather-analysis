@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='{{url_for("static", filename="styles.css")}}' />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <div class='container'>
+            <h1>NFL Weather Analysis</h1>
+            <hr />
+            <br/>
+            <p>An analysis on the impacts of weather in the NFL. Weather data from all games since the 2012 season was scraped and compared with betting odds and fantasy stats. Here's what I found.</p>
+            <br/>
+            <h2>Distribution of temperatures and wind speeds</h2>
+            <div id='distribution'>
+                <canvas id='tempPercentile' width='800' height='300'></canvas>
+                <canvas id='windPercentile' width='800' height='300'></canvas>
+            </div>
+            <br/>
+            <h2>Search games by weather filter</h2>
+            <br/>
+            <form method='POST' id='weatherForm' >
+                <input type='number' name='maxTemp' id='maxTemp' placeholder="Max Temp (F)" />
+                <input type='number' name='minTemp' id='minTemp' placeholder="Min Temp (F)" />
+                <input type='number' name='maxWind' id='maxWind' placeholder="Max Wind (mph)" />
+                <input type='number' name='minWind' id='minWind' placeholder="Min Wind (mph)" />
+                <input type='submit' value='Filter' />
+            </form>
+            <div id='tableOut'></div>
+        </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        const tempPercentiles = {{tempPercentiles}}
+        const windPercentiles = {{windPercentiles}}
+        var ctx = document.getElementById('tempPercentile').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100],
+                datasets: [{
+                    label: 'Temperature Distribution, NFL 2012-2020',
+                    backgroundColor: 'rgba(255, 99, 132, 0.3)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: tempPercentiles
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                elements: {
+                    point: {
+                        radius: 2
+                    }
+                },
+                responsive: false
+            }
+        });
+
+        var ctx2 = document.getElementById('windPercentile').getContext('2d');
+        var chart = new Chart(ctx2, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100],
+                datasets: [{
+                    label: 'Wind Speed Distribution, NFL 2012-2020',
+                    backgroundColor: 'rgba(81, 107, 184, 0.3)',
+                    borderColor: 'rgb(81, 107, 184)',
+                    data: windPercentiles
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                elements: {
+                    point: {
+                        radius: 2
+                    }
+                },
+                responsive: false
+            }
+        });
+        
+        $('#weatherForm').on('submit', function(e) {
+            e.preventDefault();
+            var maxTemp = $('#maxTemp').val() != '' ? $('#maxTemp').val() : 110;
+            var minTemp = $('#minTemp').val() != '' ? $('#minTemp').val() : 0;
+            var maxWind = $('#maxWind').val() != '' ? $('#maxWind').val() : 30;
+            var minWind = $('#minWind').val() != '' ? $('#minWind').val() : 0;
+            if (maxTemp >= minTemp && maxWind >= minWind) {
+                $.ajax({
+                    url: '{{url_for("home")}}',
+                    method: 'POST',
+                    data: {
+                        maxTemp: maxTemp,
+                        minTemp: minTemp,
+                        maxWind: maxWind,
+                        minWind: minWind
+                    },
+                    success: function(dict) {
+                        let tableOut = `<h2>Overview</h2>
+                        <p>Your search returned ` + dict.count + ` results. Here is the overview for the games.</p>
+                        <div id='overview'>
+                            <div class='item'>
+                                <h3>` + dict.winners[0] + '-' + dict.winners[1] + '-' + dict.winners[2] + `</h3>
+                                <p>Wins (Home-Away-Tie)</p>
+                            </div>
+                            <div class='item'>
+                                <h3>` + dict.covers[0] + '-' + dict.covers[1] + '-' + dict.covers[2] + `</h3>
+                                <p>Covers (Home-Away-Push)</p>
+                            </div>
+                            <div class='item'>
+                                <h3>` + dict.ou[0] + '-' + dict.ou[1] + '-' + dict.ou[2] + `</h3>
+                                <p>Wins (Over-Under-Push)</p>
+                            </div>
+                        </div>
+                        <h2>All Games</h2>` + dict.table;
+
+                        $('#tableOut').html(tableOut);
+                        console.log(dict);
+                    },
+                    error: function(error) {
+                        alert('error')
+                    }
+                });
+            } else {
+                alert('overlap')
+            }
+        });
+    </script>
+</html>

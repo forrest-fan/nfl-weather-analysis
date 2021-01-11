@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+}
+
+body {
+    font-family: 'DM Sans';
+}
+
+.container {
+    padding: 20px 40px;
+}
+
+p {font-size: 17px}
+h1 {font-size: 32px}
+
+#distribution canvas {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin: 20px 0px;
+}
+
+#weatherForm {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#weatherForm input {
+    font-family: 'DM Sans';
+    font-size: 16px;
+    padding: 3px 5px;
+    margin: 0px 5px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #000;
+    max-width: 150px;
+}
+
+#weatherForm input[type=submit] {
+    border: none;
+    padding: 6px 14px;
+    background: #3d6594;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#weatherForm input::-webkit-outer-spin-button,
+#weatherForm input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#weatherForm input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#tableOut {
+    padding: 10px 5px;
+}
+
+#tableOut #overview {
+    display: flex;
+    padding: 10px 0px;
+}
+
+#tableOut #overview .item {
+    width: 32%;
+    text-align: center;
+}
+
+#tableOut #overview .item h3 {
+    color: #3d6594;
+}
+
+#tableOut table {
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+#tableOut th {
+    background-color: #3d6594;
+    color: #fff;
+}
+
+#tableOut th, td {
+    text-align: center;
+    padding: 3px;
+    border: 1px solid #a0adbd;
+}
