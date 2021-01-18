@@ -21,6 +21,8 @@ badWeather = weather[coldGames | hotGames | windyGames | rainGames | snowGames]
 
 playersBadWeather = []
 diffToAvg = []
+diffToAvgH = []
+diffToAvgA = []
 homeWin = 0
 awayWin = 0
 tie = 0
@@ -35,6 +37,8 @@ for game in badWeather.iterrows():
     players = gameLogs[gameLogs['Game ID'] == game[0]]
     playersBadWeather.append(players)
     diffToAvg = diffToAvg + players['Diff to Avg'].tolist()
+    if ()
+
     if game[1]['Winner'] == 'Home':
         homeWin += 1
     elif game[1]['Winner'] == 'Away':
@@ -55,9 +59,10 @@ for game in badWeather.iterrows():
         under += 1
     else:
         ouPush += 1
-print(diffToAvg)
-diffToAvg = [float(i) for i in diffToAvg]
-print(diffToAvg)
+        
+
+
+
 print("Average diff", np.average(diffToAvg))
 print("Winner", homeWin, "-", awayWin, "-", tie)
 print("Cover", homeCov, "-", awayCov, "-", covPush)
