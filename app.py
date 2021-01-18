@@ -7,19 +7,13 @@ from flask import Flask, redirect, url_for, render_template, request
 
 gameStats = pd.read_pickle('game-stats.pkl')
 weatherOnly = pd.read_pickle('weather-only.pkl')
+playerStats = pd.read_pickle('all-fantasy-stats.pkl')
 
-allTemps = weatherOnly['Temperature (F)'].astype(int).tolist()
-allWinds = weatherOnly['Wind Speed (mph)'].astype(int).tolist()
+with open('./percentiles.json', 'r') as fp:
+    percentiles = json.load(fp)
 
-tempPercentiles = []
-windPercentiles = []
-labels = []
-for i in range(0, 101, 5):
-    tempPercentiles.append(np.percentile(allTemps, i))
-    windPercentiles.append(np.percentile(allWinds, i))
-    labels.append(i)
-
-print(labels)
+tempPercentiles = percentiles['temp']
+windPercentiles = percentiles['wind']
 
 
 app = Flask(__name__)
