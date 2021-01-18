@@ -69,3 +69,9 @@ print("Cover", homeCov, "-", awayCov, "-", covPush)
 print("ou", over, "-", under, "-", ouPush)
 playersBadWeather = pd.concat(playersBadWeather)
 playersBadWeather.to_csv('players-bad.csv')
+
+# Results
+# Average diff -0.038694454013089914
+# Winner 129 - 95 - 1
+# Cover 105 - 114 - 6
+# ou 109 - 115 - 1
