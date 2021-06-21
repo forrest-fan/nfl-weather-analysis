@@ -91,3 +91,8 @@ h1 {font-size: 32px}
     padding: 3px;
     border: 1px solid #a0adbd;
 }
+
+#tableOut tr:hover {
+    background-color: #d8dde4;
+    cursor: pointer;
+}

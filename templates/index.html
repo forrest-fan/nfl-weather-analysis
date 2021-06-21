@@ -89,6 +89,23 @@
             }
         });
         
+        var boxscoreDict = {};
+        
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{url_for("static", filename="boxscore-dict.json")}}',
+                method: 'GET',
+                dataType: 'json',
+                success: function(json) {
+                    boxscoreDict = json;
+                },
+                error: function(e) {
+                    console.log("error");
+                }
+            })
+        })
+        
+
         $('#weatherForm').on('submit', function(e) {
             e.preventDefault();
             var maxTemp = $('#maxTemp').val() != '' ? $('#maxTemp').val() : 110;
@@ -106,6 +123,7 @@
                         minWind: minWind
                     },
                     success: function(dict) {
+                        console.log(dict);
                         let tableOut = `<h2>Overview</h2>
                         <p>Your search returned ` + dict.count + ` results. Here is the overview for the games.</p>
                         <div id='overview'>
@@ -119,20 +137,24 @@
                             </div>
                             <div class='item'>
                                 <h3>` + dict.ou[0] + '-' + dict.ou[1] + '-' + dict.ou[2] + `</h3>
-                                <p>Wins (Over-Under-Push)</p>
+                                <p>O/U (Over-Under-Push)</p>
                             </div>
                         </div>
                         <h2>All Games</h2>` + dict.table;
 
                         $('#tableOut').html(tableOut);
-                        console.log(dict);
+
+                        // Add event listener to each row
+                        $( "#tableOut > tbody > tr").each(function(i, e) {
+                            console.log(e);
+                        });
                     },
                     error: function(error) {
                         alert('error')
                     }
                 });
             } else {
-                alert('overlap')
+                alert('The parameters overlap. Please fix the input.');
             }
         });
     </script>
