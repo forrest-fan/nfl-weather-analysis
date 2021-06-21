@@ -28,6 +28,12 @@
                 <input type='submit' value='Filter' />
             </form>
             <div id='tableOut'></div>
+            <div id="playerBoxModal">
+                <div class="modal-overlay" onClick="closeModal()"></div>
+                <div class="modal-container">
+                    <span class="exit" onClick="closeModal()">&#10006;</span>
+                </div>
+            </div>
         </div>
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -100,7 +106,7 @@
                     boxscoreDict = json;
                 },
                 error: function(e) {
-                    console.log("error");
+                    console.log("error getting boxscore dict");
                 }
             })
         })
@@ -123,7 +129,6 @@
                         minWind: minWind
                     },
                     success: function(dict) {
-                        console.log(dict);
                         let tableOut = `<h2>Overview</h2>
                         <p>Your search returned ` + dict.count + ` results. Here is the overview for the games.</p>
                         <div id='overview'>
@@ -145,8 +150,28 @@
                         $('#tableOut').html(tableOut);
 
                         // Add event listener to each row
-                        $( "#tableOut > tbody > tr").each(function(i, e) {
-                            console.log(e);
+                        $("tbody > tr").each(function(i, e) {
+                            let url = $(this).children().eq(-1).children().first().attr("href");
+                            let id = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+                            let players = boxscoreDict[id];
+                            let home = $(this).children().eq(7).text();
+                            let homeScr = $(this).children().eq(8).text();
+                            let away = $(this).children().eq(5).text();
+                            let awayScr = $(this).children().eq(6).text();
+                            let date = id.substring(0, 4) + "-" + id.substring(4, 6) + "-" + id.substring(6, 8);
+
+                            $(this).on("click", function() {
+                                let table = "<h3>" + awayScr + " " + away + " @ " + homeScr + " " + home + ", " + date + "</h3><span class='exit' onClick='closeModal()'>&#10006;</span><table><thead><tr><th>Team</th><th>Name</th><th>Position</th><th>Home/Away</th><th>Fantasy Points</th><th>Snap Share Pct</th><th>Difference to Avg</th><th>Tier</th></tr></thead><tbody>";
+                                for (let i = 0; i < players.length; i++) {
+                                    let p = players[i];
+                                    table += "<tr><td>" + p["Tm"] + "</td><td>" + p["Name"] + "</td><td>" + p["Position"] + "</td><td>" + (p["Away"] == 1 ? "Away" : "Home") + "</td><td>" + p["FantPt"] + "</td><td>" + p["Pct"] + "</td><td>" + p["Diff to Avg"] + "</td><td>" + p["Tier"] + "</td></tr>";
+                                }
+                                table += "</tbody></table>";
+                                let modalContainer = document.getElementsByClassName("modal-container")[0];
+                                modalContainer.innerHTML = table;
+                                document.getElementById("playerBoxModal").style.display = "block";
+                                console.log("done");
+                            });
                         });
                     },
                     error: function(error) {
@@ -157,5 +182,10 @@
                 alert('The parameters overlap. Please fix the input.');
             }
         });
+
+        function closeModal() {
+            let modalDiv = document.getElementById("playerBoxModal");
+            modalDiv.style.display = 'none';
+        }
     </script>
 </html>
