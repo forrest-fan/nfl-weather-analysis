@@ -7,12 +7,16 @@ boxDict = {}
 
 for i, row in df.iterrows():
     gameID = row["Game ID"]
+
     if gameID in boxDict:
         boxDict[gameID].append(row.to_dict())
     else:
         boxDict[gameID] = [row.to_dict()]
 
-with open('boxscore-dict.json', 'w+') as f:
-    json.dump(boxDict, f)
+
+print(boxDict['202012080rav'])
+
+# with open('boxscore-dict.json', 'w+') as f:
+#     json.dump(boxDict, f)
 
 print("done")

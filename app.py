@@ -71,8 +71,8 @@ def home():
                     tierSum[2] += player["Diff to Avg"]
                     tierCount[2] += 1
             
-            for i in range(2):
-                tierAvg[i] = tierSum[i] / tierCount[i]
+            for i in range(3):
+                tierAvg[i] = round(tierSum[i] / tierCount[i], 2)
 
         weatherDict = {
             'table': table,

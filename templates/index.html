@@ -145,19 +145,33 @@
                                 <p>O/U (Over-Under-Push)</p>
                             </div>
                             <div class='item'>
-                                <h3>` + dict.tierAvg[0] + `</h3>
-                                <p>Tier 1 Difference from Season Average</p>
+                                <h3>` + dict.tierAvg[0] + `
+                                    <sup><div class="tooltip">
+                                    ?
+                                    <div class="tooltip-text">The difference from their indivdual season average scored by Tier 1 players (Top 12 by position).</div>
+                                    </div></sup>    
+                                </h3>
+                                <p>Tier 1</p>
+                                
                             </div>
                             <div class='item'>
-                                <h3>` + dict.tierAvg[1] + `</h3>
-                                <p>Tier 2 Difference from Season Average</p>
+                                <h3>` + dict.tierAvg[1] + `
+                                    <sup><div class="tooltip">
+                                    ?
+                                    <div class="tooltip-text">The difference from their indivdual season average scored by Tier 2 players (Top 13 - 24 by position).</div>
+                                    </div></sup> </h3>
+                                <p>Tier 2</p>
                             </div>
                             <div class='item'>
-                                <h3>` + dict.tierAvg[2] + `</h3>
-                                <p>Tier 3 Difference from Season Average</p>
+                                <h3>` + dict.tierAvg[2] + `
+                                    <sup><div class="tooltip">
+                                    ?
+                                    <div class="tooltip-text">The difference from their indivdual season average scored by Tier 3 players (Ranked 25th or lower by position).</div>
+                                    </div></sup> </h3>
+                                <p>Tier 3</p>
                             </div>
                         </div>
-                        <h2>All Games</h2>` + dict.table;
+                        <h2>All Games</h2><p>Click on a row to see individual fantasy stats of the players who played in that game.</p>` + dict.table;
 
                         $('#tableOut').html(tableOut);
 
