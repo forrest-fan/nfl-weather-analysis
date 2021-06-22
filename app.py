@@ -12,9 +12,11 @@ playerStats = pd.read_pickle('all-fantasy-stats.pkl')
 with open('./percentiles.json', 'r') as fp:
     percentiles = json.load(fp)
 
+with open("./static/boxscore-dict.json", 'r') as f:
+    boxscoreDict = json.load(f)
+
 tempPercentiles = percentiles['temp']
 windPercentiles = percentiles['wind']
-
 
 app = Flask(__name__)
 
@@ -31,8 +33,11 @@ def home():
         winners = [0, 0, 0]
         covers = [0, 0, 0]
         ou = [0, 0, 0]
+        tierSum = [0, 0, 0]
+        tierCount = [0, 0, 0]
+        tierAvg = [0, 0, 0]
         count = 0
-        for winner, covered, ouResult in zip(filteredWeather['Winner'], filteredWeather['Covered'], filteredWeather['O/U Result']):
+        for gameID, winner, covered, ouResult in zip(filteredWeather.index, filteredWeather['Winner'], filteredWeather['Covered'], filteredWeather['O/U Result']):
             count += 1
             if winner == 'Home':
                 winners[0] += 1
@@ -54,13 +59,28 @@ def home():
                 ou[1] += 1
             else:
                 ou[2] += 1
+            
+            for player in boxscoreDict[gameID]:
+                if player["Tier"] == 1:
+                    tierSum[0] += player["Diff to Avg"]
+                    tierCount[0] += 1
+                elif player["Tier"] == 2:
+                    tierSum[1] += player["Diff to Avg"]
+                    tierCount[1] += 1
+                else:
+                    tierSum[2] += player["Diff to Avg"]
+                    tierCount[2] += 1
+            
+            for i in range(2):
+                tierAvg[i] = tierSum[i] / tierCount[i]
 
         weatherDict = {
             'table': table,
             'count': count,
             'winners': winners,
             'covers': covers,
-            'ou': ou
+            'ou': ou,
+            'tierAvg': tierAvg
         }
 
         return weatherDict
