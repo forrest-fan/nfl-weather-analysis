@@ -14,11 +14,6 @@ et-xmlfile==1.0.1
 Flask==1.1.2
 flatbuffers==1.12
 gast==0.3.3
-gcloud==0.18.3
-google-auth==1.24.0
-google-auth-oauthlib==0.4.2
-google-pasta==0.2.0
-googleapis-common-protos==1.52.0
 grpcio==1.32.0
 gunicorn==20.1.0
 h5py==2.10.0
@@ -31,7 +26,6 @@ itsdangerous==1.1.0
 jdcal==1.4.1
 Jinja2==2.11.2
 jwcrypto==0.8
-Keras-Preprocessing==1.1.2
 lxml==4.6.2
 Markdown==3.3.3
 MarkupSafe==1.1.1
@@ -47,7 +41,6 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
 pycryptodome==3.9.9
-Pyrebase4==4.4.3
 python-dateutil==2.8.1
 python-jwt==3.3.0
 pytz==2020.5
@@ -58,10 +51,6 @@ rsa==4.6
 six==1.15.0
 soupsieve==2.1
 sqlparse==0.4.1
-tensorboard==2.4.0
-tensorboard-plugin-wit==1.7.0
-tensorflow==2.4.0
-tensorflow-estimator==2.4.0
 termcolor==1.1.0
 typing-extensions==3.7.4.3
 urllib3==1.26.2
