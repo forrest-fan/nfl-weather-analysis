@@ -13,10 +13,7 @@ for i, row in df.iterrows():
     else:
         boxDict[gameID] = [row.to_dict()]
 
-
-print(boxDict['202012080rav'])
-
-# with open('boxscore-dict.json', 'w+') as f:
-#     json.dump(boxDict, f)
+with open('boxscore-dict.json', 'w+') as f:
+    json.dump(boxDict, f)
 
 print("done")

@@ -5,11 +5,11 @@ import numpy as np
 import json
 from flask import Flask, redirect, url_for, render_template, request
 
-gameStats = pd.read_pickle('game-stats.pkl')
-weatherOnly = pd.read_pickle('weather-only.pkl')
-playerStats = pd.read_pickle('all-fantasy-stats.pkl')
+gameStats = pd.read_pickle('./static/game-stats.pkl')
+weatherOnly = pd.read_pickle('./static/weather-only.pkl')
+playerStats = pd.read_pickle('./static/all-fantasy-stats.pkl')
 
-with open('./percentiles.json', 'r') as fp:
+with open('./static/percentiles.json', 'r') as fp:
     percentiles = json.load(fp)
 
 with open("./static/boxscore-dict.json", 'r') as f:
@@ -33,9 +33,14 @@ def home():
         winners = [0, 0, 0]
         covers = [0, 0, 0]
         ou = [0, 0, 0]
+        # Tier 1, 2, 3
         tierSum = [0, 0, 0]
         tierCount = [0, 0, 0]
         tierAvg = [0, 0, 0]
+        # QB, RB, WR, TE, K
+        positionSum = [0, 0, 0, 0, 0]
+        positionCount = [0, 0, 0, 0, 0]
+        positionAvg = [0, 0, 0, 0, 0]
         count = 0
         for gameID, winner, covered, ouResult in zip(filteredWeather.index, filteredWeather['Winner'], filteredWeather['Covered'], filteredWeather['O/U Result']):
             count += 1
@@ -70,9 +75,28 @@ def home():
                 else:
                     tierSum[2] += player["Diff to Avg"]
                     tierCount[2] += 1
+
+                if player["Position"] == "QB":
+                    positionSum[0] += player["Diff to Avg"]
+                    positionCount[0] += 1
+                elif player["Position"] == "RB":
+                    positionSum[1] += player["Diff to Avg"]
+                    positionCount[1] += 1
+                elif player["Position"] == "WR":
+                    positionSum[2] += player["Diff to Avg"]
+                    positionCount[2] += 1
+                elif player["Position"] == "TE":
+                    positionSum[3] += player["Diff to Avg"]
+                    positionCount[3] += 1
+                else:
+                    positionSum[4] += player["Diff to Avg"]
+                    positionCount[4] += 1
             
             for i in range(3):
                 tierAvg[i] = round(tierSum[i] / tierCount[i], 2)
+            
+            for i in range(5):
+                positionAvg[i] = round(positionSum[i] / positionCount[i], 2)
 
         weatherDict = {
             'table': table,
@@ -80,7 +104,8 @@ def home():
             'winners': winners,
             'covers': covers,
             'ou': ou,
-            'tierAvg': tierAvg
+            'tierAvg': tierAvg,
+            'positionAvg': positionAvg
         }
 
         return weatherDict

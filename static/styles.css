@@ -61,19 +61,24 @@ h1 {font-size: 32px}
     padding: 10px 5px;
 }
 
-#tableOut #overview {
+#tableOut #overview,
+#tableOut #diff-to-avg {
     display: flex;
     flex-wrap: wrap;
     padding: 10px 0px;
 }
 
-#tableOut #overview .item {
+#tableOut .item {
     width: 32%;
     text-align: center;
     padding: 15px 0px;
 }
 
-#tableOut #overview .item h3 {
+#tableOut .item.position {
+    width: 19%;
+}
+
+#tableOut .item h3 {
     color: #3d6594;
 }
 
